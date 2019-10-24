@@ -1,0 +1,84 @@
+# http://goreleaser.com
+env:
+  - GO111MODULE=on
+  - GOPROXY=https://gocenter.io
+before:
+  hooks:
+    - go mod tidy
+builds:
+  - binary: semversort
+    goos:
+      - linux
+      - darwin
+      - windows
+      - freebsd
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
+      - ppc64le
+      - s390x
+    goarm:
+      - 6
+      - 7
+    env:
+      - CGO_ENABLED=0
+archives:
+- replacements:
+    darwin: Darwin
+    linux: Linux
+    windows: Windows
+    386: i386
+    amd64: x86_64
+  format_overrides:
+    - goos: windows
+      format: zip
+
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ .Tag }}-next"
+
+dockers:
+  - image_templates:
+      - 'docker.pkg.github.com/whereswaldon/semversort/semversort:{{ .Tag }}'
+      - 'docker.pkg.github.com/whereswaldon/semversort/semversort:v{{ .Major  }}.{{ .Minor }}'
+      - 'docker.pkg.github.com/whereswaldon/semversort/semversort:v{{ .Major }}'
+    dockerfile: Dockerfile
+    binaries:
+      - semversort
+    build_flag_templates:
+      # Deprecated but still used by some services.
+      - "--label=org.label-schema.schema-version=1.0"
+      - "--label=org.label-schema.version={{.Version}}"
+      - "--label=org.label-schema.name={{.ProjectName}}"
+      - "--label=org.label-schema.vcs-ref={{.FullCommit}}"
+      - "--label=org.label-schema.vcs-url={{.GitURL}}"
+
+      - "--label=org.opencontainers.title={{.ProjectName}}"
+      - "--label=org.opencontainers.version={{.Version}}"
+      - "--label=org.opencontainers.created={{.Date}}"
+      - "--label=org.opencontainers.url=https://github.com/whereswaldon/semversort"
+      - "--label=org.opencontainers.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.source={{.GitURL}}"
+      - "--label=org.opencontainers.licenses=MIT"
+      - "--label=org.opencontainers.authors=Christopher Waldon <https://waldon.blog/>"
+brews:
+  - github:
+      owner: whereswaldon
+      name: homebrew-tap
+    folder: Formula
+    homepage:  https://github.com/whereswaldon/semversort
+    description: Sort your semantic versions
+    test: |
+      system "#{bin}/semversort -v"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+    - '^docs:'
+    - '^test:'
+    - Merge pull request
+    - Merge branch
