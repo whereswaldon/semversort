@@ -9,6 +9,8 @@ With go 1.13+
 go get github.com/whereswaldon/semversort@latest
 ```
 
+If you encounter an error about module support, `export GO111MODULE=on` and try again.
+
 ## Use
 
 Example use:
