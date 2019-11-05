@@ -16,7 +16,6 @@ If you encounter an error about module support, `export GO111MODULE=on` and try 
 Example use:
 
 ```bash
-curl https://api.github.com/repos/ul/kak-lsp/releases | jq .[].tag_name | tr -d '"' | shuf | semversort
+curl -sS https://api.github.com/repos/kubernetes/kubernetes/releases \
+  | jq -r '.[].tag_name' | semversort
 ```
-
-Note that the output would have been sorted by github without the `shuf` in the middle there.
