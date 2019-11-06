@@ -32,7 +32,7 @@ func main() {
 			}
 			log.Fatalf("failed to read input line: %v", err)
 		}
-		ver, err := semver.Parse(line)
+		ver, err := semver.ParseTolerant(line)
 		if err != nil {
 			log.Fatalf("failed to parse semver \"%s\": %v", line, err)
 		}
