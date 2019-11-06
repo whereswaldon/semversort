@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"io"
 	"log"
@@ -11,6 +12,11 @@ import (
 )
 
 func main() {
+	var (
+		tolerant bool
+	)
+	flag.BoolVar(&tolerant, "tolerant", false, "allow versions that do not perfectly conform to semver spec")
+	flag.Parse()
 	reader := bufio.NewReader(os.Stdin)
 	versions := make([]semver.Version, 0, 10)
 	for {
@@ -32,7 +38,14 @@ func main() {
 			}
 			log.Fatalf("failed to read input line: %v", err)
 		}
-		ver, err := semver.ParseTolerant(line)
+
+		// use tolerant parse function if requested
+		parseFunc := semver.Parse
+		if tolerant {
+			parseFunc = semver.ParseTolerant
+		}
+
+		ver, err := parseFunc(line)
 		if err != nil {
 			log.Fatalf("failed to parse semver \"%s\": %v", line, err)
 		}
