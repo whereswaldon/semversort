@@ -2,4 +2,4 @@ module github.com/whereswaldon/semversort
 
 go 1.13
 
-require github.com/blang/semver v3.6.1+incompatible
+require golang.org/x/mod v0.1.0
