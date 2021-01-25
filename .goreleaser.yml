@@ -63,15 +63,6 @@ dockers:
       - "--label=org.opencontainers.source={{.GitURL}}"
       - "--label=org.opencontainers.licenses=MIT"
       - "--label=org.opencontainers.authors=Christopher Waldon <https://waldon.blog/>"
-brews:
-  - github:
-      owner: whereswaldon
-      name: homebrew-tap
-    folder: Formula
-    homepage:  https://github.com/whereswaldon/semversort
-    description: Sort your semantic versions
-    test: |
-      system "#{bin}/semversort -v"
 
 changelog:
   sort: asc
