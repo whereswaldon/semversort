@@ -2,4 +2,4 @@ module github.com/whereswaldon/semversort
 
 go 1.13
 
-require golang.org/x/mod v0.4.1
+require golang.org/x/mod v0.12.0
